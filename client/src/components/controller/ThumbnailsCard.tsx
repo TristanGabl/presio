@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { renderPage, type MediaPlacement } from "@/lib/pdf";
+import { renderPage } from "@/lib/pdf";
 import type { Deck } from "@/lib/deck";
 import { drawStrokes, type Stroke } from "@/lib/annotations";
-import { getMediaPoster } from "@/lib/mediaPoster";
+import { MediaPoster } from "@/components/MediaPosterOverlay";
 
 export function ThumbnailsCard({
   deck,
@@ -115,31 +115,4 @@ function ThumbStrokes({ strokes }: { strokes?: readonly Stroke[] }) {
 
   if (!strokes?.length) return null;
   return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" aria-hidden />;
-}
-
-// Overlays a static preview image for media that has no frame baked into the
-// PDF page (YouTube/Vimeo embeds, gifs), positioned to match the live overlay.
-function MediaPoster({ placement }: { placement: MediaPlacement }) {
-  const [src, setSrc] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    getMediaPoster(placement).then((url) => { if (!cancelled) setSrc(url); });
-    return () => { cancelled = true; };
-  }, [placement]);
-
-  if (!src) return null;
-  return (
-    <img
-      src={src}
-      alt=""
-      className="absolute object-cover pointer-events-none"
-      style={{
-        left: `${placement.xPct * 100}%`,
-        top: `${placement.yPct * 100}%`,
-        width: `${placement.wPct * 100}%`,
-        height: `${placement.hPct * 100}%`,
-      }}
-    />
-  );
 }

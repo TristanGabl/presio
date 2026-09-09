@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { renderPage } from "@/lib/pdf";
 import type { Deck } from "@/lib/deck";
 import { AnnotationOverlay } from "@/components/AnnotationOverlay";
+import { MediaPosterOverlay } from "@/components/MediaPosterOverlay";
 
 export function NextSlideCard({
   deck,
@@ -36,10 +37,17 @@ export function NextSlideCard({
   }, [pdf, currentSlide, totalSlides]);
 
   const nextStrokes = deck.annotations[currentSlide + 1];
+  // Embeds bake only their URL into the page, so preview them the way the
+  // thumbnail strip does rather than showing the raw "youtube.com/watch?v=…".
+  const nextMedia =
+    currentSlide < totalSlides ? deck.mediaBySlide.get(currentSlide + 1) : undefined;
 
   return (
     <div className="h-full relative rounded overflow-hidden bg-white">
       <div ref={containerRef} className="absolute inset-0" />
+      {!!nextMedia?.length && (
+        <MediaPosterOverlay canvasContainerRef={containerRef} placements={nextMedia} />
+      )}
       {!!nextStrokes?.length && (
         <AnnotationOverlay containerRef={containerRef} strokes={nextStrokes} />
       )}
