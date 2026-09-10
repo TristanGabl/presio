@@ -532,6 +532,8 @@ export function ControllerView({
           ref={currentCanvasRef}
           local={local}
           mediaPlacements={mediaPlacements}
+          links={deck.linksBySlide.get(currentSlide) ?? []}
+          onGoTo={onGoTo}
           mediaState={mediaState}
           onMediaControl={onMediaControl}
           onMediaTime={onMediaTime}
