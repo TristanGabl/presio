@@ -189,7 +189,9 @@ export function AnnotationToolbar({
     <div
       ref={rootRef}
       className={cn(
-        "absolute z-10 flex items-start gap-1 transition-opacity",
+        // Only the panels take input: the wrapper spans the tallest panel, and
+        // the empty space beside a shorter one must stay drawable.
+        "absolute z-10 flex items-start gap-1 transition-opacity pointer-events-none [&>*]:pointer-events-auto",
         horizontal && "flex-col",
         // Faded, but still live: the mouse can only reach it by coming back
         // over the slide, which un-fades it on the way in. Leaving fades

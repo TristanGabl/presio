@@ -597,7 +597,7 @@ export function AnnotationOverlay({
       onPointerCancel={onPointerUp}
       onPointerLeave={onPointerLeave}
     >
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+      <canvas ref={canvasRef} data-testid="annotation-strokes" className="absolute inset-0 w-full h-full pointer-events-none" />
       {/* Always mounted while in use, so a line fades out after the pointer leaves. */}
       {tool === "laser" && <LaserTrail point={localLaser?.trail ? localLaser : null} rect={rect} />}
       {remoteLaser !== undefined && (
